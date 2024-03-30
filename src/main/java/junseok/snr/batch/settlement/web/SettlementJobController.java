@@ -1,0 +1,47 @@
+package junseok.snr.batch.settlement.web;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+
+@RequiredArgsConstructor
+@RestController
+public class SettlementJobController {
+    private final JobLauncher jobLauncher;
+    private final Job settlementJob;
+
+    @PostMapping("/run-settlement-job")
+    public ResponseEntity<RunSettlementJobResponse> runSettlementJob(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime) {
+        try {
+            final LocalDateTime time = dateTime != null ? dateTime : LocalDateTime.now();
+            final JobParameters jobParameters = new JobParametersBuilder()
+                    .addString("time", time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")))
+                    .toJobParameters();
+
+            final JobExecution jobExecution = jobLauncher.run(settlementJob, jobParameters);
+
+            return ResponseEntity.ok(RunSettlementJobResponse.builder()
+                    .code("SUCCESS")
+                    .message(jobExecution.getStatus().toString())
+                    .build());
+        } catch (Exception e) {
+
+            return ResponseEntity.internalServerError().body(RunSettlementJobResponse.builder()
+                    .code(ErrorCode.BATCH_JOB_FAILED.name())
+                    .message(ErrorCode.BATCH_JOB_FAILED.getDescription())
+                    .build());
+        }
+    }
+}
