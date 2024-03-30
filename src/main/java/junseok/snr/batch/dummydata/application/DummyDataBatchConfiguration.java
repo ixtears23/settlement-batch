@@ -1,7 +1,8 @@
-package junseok.snr.batch.dummydata;
+package junseok.snr.batch.dummydata.application;
 
 import jakarta.persistence.EntityManagerFactory;
 import junseok.snr.batch.settlement.domain.Transaction;
+import junseok.snr.batch.settlement.infrastructure.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -31,6 +32,7 @@ public class DummyDataBatchConfiguration {
     private final EntityManagerFactory entityManagerFactory;
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
+    private final TransactionRepository transactionRepository;
 
     @Bean
     public Job dataGeneratorJob() {
@@ -44,9 +46,14 @@ public class DummyDataBatchConfiguration {
         return new StepBuilder("dataGeneratorStep", jobRepository)
                 .<Transaction, Transaction>chunk(1_000, platformTransactionManager)
                 .reader(dummyDataItemReader())
-                .writer(dummyDataItemWriter())
+                .writer(transactionItemWriter())
                 .taskExecutor(dummyDataTaskExecutor())
                 .build();
+    }
+
+    @Bean
+    public ItemWriter<Transaction> transactionItemWriter() {
+        return new TransactionItemWriter(transactionRepository);
     }
 
     @Bean

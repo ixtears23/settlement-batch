@@ -1,4 +1,4 @@
-package junseok.snr.batch.dummydata;
+package junseok.snr.batch.dummydata.web;
 
 import junseok.snr.batch.common.dto.ErrorCode;
 import junseok.snr.batch.common.dto.CommonResponse;
