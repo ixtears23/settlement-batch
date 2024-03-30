@@ -31,7 +31,7 @@ public class DataGenerator {
         }
     }
 
-    @Bean
+//    @Bean
     public CommandLineRunner generateTestData() {
         return args -> {
             int totalRecords = 1_000_000;

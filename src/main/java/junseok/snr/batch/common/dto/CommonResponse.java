@@ -1,4 +1,4 @@
-package junseok.snr.batch.settlement.web;
+package junseok.snr.batch.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class RunSettlementJobResponse {
+public class CommonResponse {
     private String code;
     private String message;
 }

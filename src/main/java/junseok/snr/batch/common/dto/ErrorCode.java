@@ -1,4 +1,4 @@
-package junseok.snr.batch.settlement.web;
+package junseok.snr.batch.common.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

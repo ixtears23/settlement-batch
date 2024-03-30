@@ -1,5 +1,7 @@
 package junseok.snr.batch.settlement.web;
 
+import junseok.snr.batch.common.dto.CommonResponse;
+import junseok.snr.batch.common.dto.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -25,7 +27,7 @@ public class SettlementJobController {
     private final Job settlementJob;
 
     @PostMapping("/run-settlement-job")
-    public ResponseEntity<RunSettlementJobResponse> runSettlementJob(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime) {
+    public ResponseEntity<CommonResponse> runSettlementJob(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime) {
         try {
             final LocalDateTime time = dateTime != null ? dateTime : LocalDateTime.now();
             final JobParameters jobParameters = new JobParametersBuilder()
@@ -34,13 +36,13 @@ public class SettlementJobController {
 
             final JobExecution jobExecution = jobLauncher.run(settlementJob, jobParameters);
 
-            return ResponseEntity.ok(RunSettlementJobResponse.builder()
+            return ResponseEntity.ok(CommonResponse.builder()
                     .code("SUCCESS")
                     .message(jobExecution.getStatus().toString())
                     .build());
         } catch (Exception e) {
             log.error("=== runSettlementJob Error", e);
-            return ResponseEntity.internalServerError().body(RunSettlementJobResponse.builder()
+            return ResponseEntity.internalServerError().body(CommonResponse.builder()
                     .code(ErrorCode.BATCH_JOB_FAILED.name())
                     .message(ErrorCode.BATCH_JOB_FAILED.getDescription())
                     .build());
