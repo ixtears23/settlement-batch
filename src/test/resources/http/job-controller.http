@@ -1,0 +1,15 @@
+### 정산 Batch
+POST http://localhost:8080/run-settlement-job
+Content-Type: application/json
+
+{
+  "dateTime": "2023-03-30T15:30:00"
+}
+
+### Dummay 데이터 생성 Batch
+POST http://localhost:8080/run-data-generator-job
+Content-Type: application/json
+
+{
+"dateTime": "2023-03-30T15:30:00"
+}
