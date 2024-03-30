@@ -1,6 +1,7 @@
 package junseok.snr.batch.settlement.web;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class SettlementJobController {
@@ -37,7 +39,7 @@ public class SettlementJobController {
                     .message(jobExecution.getStatus().toString())
                     .build());
         } catch (Exception e) {
-
+            log.error("=== runSettlementJob Error", e);
             return ResponseEntity.internalServerError().body(RunSettlementJobResponse.builder()
                     .code(ErrorCode.BATCH_JOB_FAILED.name())
                     .message(ErrorCode.BATCH_JOB_FAILED.getDescription())

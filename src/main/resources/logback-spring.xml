@@ -9,7 +9,9 @@
         </encoder>
     </appender>
 
-    <logger name="junseok.snr.batch" level="DEBUG"/>
+    <logger name="junseok.snr.batch" level="DEBUG" additivity="false"/>
+    <logger name="org.hibernate.SQL" level="DEBUG" additivity="false"/>
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="false"/>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
