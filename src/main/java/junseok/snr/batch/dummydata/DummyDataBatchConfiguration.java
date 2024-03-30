@@ -42,15 +42,15 @@ public class DummyDataBatchConfiguration {
     @Bean
     public Step dataGeneratorStep() {
         return new StepBuilder("dataGeneratorStep", jobRepository)
-                .chunk(1_000, platformTransactionManager)
-                .reader(itemReader())
-//                .writer(jpaItemWriter())
-                .taskExecutor(taskExecutor())
+                .<Transaction, Transaction>chunk(1_000, platformTransactionManager)
+                .reader(dummyDataItemReader())
+                .writer(dummyDataItemWriter())
+                .taskExecutor(dummyDataTaskExecutor())
                 .build();
     }
 
     @Bean
-    public ItemReader<Transaction> itemReader() {
+    public ItemReader<Transaction> dummyDataItemReader() {
         return new ItemReader<>() {
             private final AtomicInteger counter = new AtomicInteger();
 
@@ -76,14 +76,14 @@ public class DummyDataBatchConfiguration {
     }
 
     @Bean
-    public ItemWriter<Transaction> jpaItemWriter() {
+    public ItemWriter<Transaction> dummyDataItemWriter() {
         return new JpaItemWriterBuilder<Transaction>()
                 .entityManagerFactory(entityManagerFactory)
                 .build();
     }
 
     @Bean
-    public TaskExecutor taskExecutor() {
+    public TaskExecutor dummyDataTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(10); // 초기 스레드 풀 사이즈
         executor.setMaxPoolSize(20); // 최대 스레드 풀 사이즈

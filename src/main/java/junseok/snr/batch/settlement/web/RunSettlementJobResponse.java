@@ -1,12 +1,14 @@
 package junseok.snr.batch.settlement.web;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
-@RequiredArgsConstructor
 public class RunSettlementJobResponse {
     private String code;
     private String message;

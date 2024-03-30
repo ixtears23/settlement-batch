@@ -53,7 +53,7 @@ public class SettlementBatchConfiguration {
                 .reader(transactionReader())
                 .processor(transactionProcessor())
                 .writer(settlementWriter())
-                .taskExecutor(taskExecutor())
+                .taskExecutor(settlementTaskExecutor())
                 .build();
     }
 
@@ -103,8 +103,9 @@ public class SettlementBatchConfiguration {
             settlementRepository.save(settlement);
         };
     }
+
     @Bean
-    public TaskExecutor taskExecutor() {
+    public TaskExecutor settlementTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(10);
         executor.setMaxPoolSize(20);

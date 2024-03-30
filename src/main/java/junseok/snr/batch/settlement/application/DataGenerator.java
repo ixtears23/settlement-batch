@@ -18,7 +18,7 @@ import java.util.Random;
 public class DataGenerator {
     private final TransactionRepository transactionRepository;
 
-    @Async("taskExecutor")
+    @Async("dummyDataTaskExecutor")
     public void generateTransactions(int start, int end) {
         Random random = new Random();
         for (int i = start; i <= end; i++) {
