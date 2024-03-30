@@ -14,10 +14,10 @@ spring:
       hibernate:
         format_sql: true
     show-sql: false
+    open-in-view: off
 
   batch:
     job:
       enabled: false
     jdbc:
-      table-prefix: batch
       initialize-schema: always
