@@ -13,8 +13,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    show-sql: true
+    show-sql: false
 
   batch:
     job:
       enabled: false
+    jdbc:
+      table-prefix: batch
+      initialize-schema: always
